@@ -1,10 +1,11 @@
-=== Plugin Name ===
+=== AI Shield ===
 Contributors: kinggmobb
 Donate link: https://github.com/sponsors/KingMob
 Tags: AI, chatGPT, gpt, openai
 Requires at least: 5.6.10
 Tested up to: 6.2
-Stable tag: 4.3
+Stable tag: trunk
+Requires PHP: 7.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,30 +14,17 @@ that's invisible to humans, but awkward for AIs.
 
 == Description ==
 
+This is not fool-proof, but will add a roadblock to ML use of the data.
 
+It inserts whitespace characters that are effectively invisible to humans in the middle of words, while also replacing
+visible whitespace with non-standard, but valid, whitespace characters.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+This somewhat blurs the boundary of what's a word or not, and should work until AI companies add a clean-up process to
+compensate for it. But until that's added, it may prevent your content from being trivially used.
 
-A few notes about the sections above:
+In the end, preventing your content from being used without consent or payment requires a social and/or legal solution,
+not a technological one. But until then, give this a try!
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
-
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
-
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
 
 == Installation ==
 
@@ -44,72 +32,34 @@ This section describes how to install the plugin and get it working.
 
 e.g.
 
-1. Upload `ai-shield.php` to the `/wp-content/plugins/` directory
+1. Upload the files to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('ai_shield_hook'); ?>` in your templates
+1. That's it! There are no settings to change. It will automatically alter your post content on the fly
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= How do I know it's working if it's invisible? =
 
-An answer to that question.
+Try copying-and-pasting some post content (not headlines) into https://invisible-characters.com/view.html, and
+click on the "View!" button. It will show you all the invisible characters. Anything that begins with "U+", but isn't
+"U+0020" is nonstandard whitespace. Note that some of it appears *inside* words.
 
-= What about foo bar? =
+= What content does it protect? =
 
-Answer to foo bar dilemma.
+For now, just the body content, not things like titles or images. If you want those to be "obscured" too, let me know.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Sample paragraph from a post, copied from the browser. It includes some special characters for testing.
+2. The same paragraph pastes into https://invisible-characters.com/view.html. You can see all the whitespace characters at the bottom.
 
 == Changelog ==
 
 = 1.0 =
-* A change since the previous version.
-* Another change.
-
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+* Initial release
 
 == Upgrade Notice ==
 
 = 1.0 =
 Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
 
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`

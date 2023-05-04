@@ -8,18 +8,19 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://example.com
+ * @link              https://github.com/KingMob/ai-shield
  * @since             1.0.0
  * @package           Ai_Shield
  *
  * @wordpress-plugin
  * Plugin Name:       AI Shield
- * Plugin URI:        http://example.com/ai-shield-uri/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin URI:        https://github.com/KingMob/ai-shield
+ * Description:       AI Shield helps protect your content from being used to train AI models, by inserting whitespace
+that's invisible to humans, but awkward for AIs.
  * Version:           1.0.0
- * Author:            Modulo Lotus, LLC
- * Author URI:        http://example.com/
- * License:           GPL-2.0+
+ * Author:            Matthew Davidson
+ * Author URI:        https://github.com/KingMob
+ * License:           GPL-2.0
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       ai-shield
  * Domain Path:       /languages
