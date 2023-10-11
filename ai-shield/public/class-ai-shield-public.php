@@ -3,7 +3,6 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://example.com
  * @since      1.0.0
  *
  * @package    Ai_Shield
