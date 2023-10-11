@@ -17,7 +17,7 @@
  * Plugin URI:        https://github.com/KingMob/ai-shield
  * Description:       AI Shield helps protect your content from being used to train AI models, by inserting whitespace
 that's invisible to humans, but awkward for AIs.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Matthew Davidson
  * Author URI:        https://github.com/KingMob
  * License:           GPL-2.0
@@ -31,18 +31,13 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
- * Rename this for your plugin and update it as you release new versions.
- */
-define( 'AI_SHIELD_VERSION', '1.0.0' );
+define( 'AI_SHIELD_VERSION', '1.0.1' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-ai-shield-activator.php
  */
-function activate_ai_shield() {
+function ai_shield_activate() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-ai-shield-activator.php';
 	Ai_Shield_Activator::activate();
 }
@@ -51,13 +46,13 @@ function activate_ai_shield() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-ai-shield-deactivator.php
  */
-function deactivate_ai_shield() {
+function ai_shield_deactivate() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-ai-shield-deactivator.php';
 	Ai_Shield_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_ai_shield' );
-register_deactivation_hook( __FILE__, 'deactivate_ai_shield' );
+register_activation_hook( __FILE__, 'ai_shield_activate' );
+register_deactivation_hook( __FILE__, 'ai_shield_deactivate' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -74,10 +69,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-ai-shield.php';
  *
  * @since    1.0.0
  */
-function run_ai_shield() {
+function ai_shield_run() {
 
 	$plugin = new Ai_Shield();
 	$plugin->run();
 
 }
-run_ai_shield();
+ai_shield_run();

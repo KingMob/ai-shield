@@ -72,7 +72,7 @@ class Ai_Shield {
 		if ( defined( 'AI_SHIELD_VERSION' ) ) {
 			$this->version = AI_SHIELD_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.0.1';
 		}
 		$this->ai_shield = 'ai-shield';
 
