@@ -3,7 +3,6 @@
 /**
  * Fired during plugin deactivation
  *
- * @link       http://example.com
  * @since      1.0.0
  *
  * @package    Ai_Shield
