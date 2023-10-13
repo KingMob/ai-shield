@@ -239,7 +239,7 @@ class Ai_Shield {
 		// error_log("in loop:".in_the_loop());
 		// error_log("is main query:".is_main_query());
 
-		$debug_mode = rest_sanitize_boolean($_GET['ai_shield_debug']);
+		$debug_mode = array_key_exists('ai_shield_debug', $_GET) ? rest_sanitize_boolean($_GET['ai_shield_debug']) : false;
 
 		if ( $options['enabled'] ) {
 			if (( is_front_page() || is_singular() ) && in_the_loop() && is_main_query() ) {
@@ -279,7 +279,6 @@ class Ai_Shield {
 
 		// Not currently used
 		// $plugin_public = new Ai_Shield_Public( $this->get_ai_shield(), $this->get_version() );
-
 		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
