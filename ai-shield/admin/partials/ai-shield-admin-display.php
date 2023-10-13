@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     
 /**
- * Provide a admin area view for the plugin
+ * Provide a admin area view for the plugin. Currently unused as all config is done with Settings API
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
@@ -13,5 +13,3 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @subpackage Ai_Shield/admin/partials
  */
 ?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->

@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     
 
 /**
- * Provide a public-facing view for the plugin
+ * Provide a public-facing view for the plugin. Currently unused, but left in for the future
  *
  * This file is used to markup the public-facing aspects of the plugin.
  *
@@ -14,5 +14,3 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @subpackage Ai_Shield/public/partials
  */
 ?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
