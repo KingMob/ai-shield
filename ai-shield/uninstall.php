@@ -28,3 +28,8 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+
+require_once plugin_dir_path( __FILE__ ) . 'admin/class-ai-shield-admin.php';
+
+delete_option(\Ai_Shield_Admin::OPTION_NAME);

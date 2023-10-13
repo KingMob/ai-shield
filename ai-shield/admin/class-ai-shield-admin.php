@@ -37,6 +37,39 @@ class Ai_Shield_Admin {
 	private $version;
 
 	/**
+	 * The option name
+	 *
+	 * @since    1.0.1
+	 * @access   private
+	 * @var      string    $option_name    The key all options are stored under
+	 */
+	public const OPTION_NAME = 'ai_shield';
+
+	/**
+	 * The option group of this plugin.
+	 *
+	 * @since    1.0.1
+	 * @access   private
+	 * @var      string    $option_group    The option group
+	 */
+	private $option_group = 'ai_shield_group';
+
+	/**
+	 * The option page of this plugin.
+	 *
+	 * @since    1.0.1
+	 * @access   private
+	 * @var      string    $option_page    The option page
+	 */
+	private $option_page = 'ai_shield_page';
+
+	public const DEFAULT_SETTINGS = [
+		'enabled' => true,
+		'use_cache' => true,
+		'cache_duration' => 5
+	];
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -50,24 +83,173 @@ class Ai_Shield_Admin {
 
 	}
 
+	public function register_settings () {
+		$settings_section = self::OPTION_NAME . '_section';
+		
+		register_setting( 
+			$this->option_group, 
+			self::OPTION_NAME ,
+			[	
+				'sanitize_callback' => [$this, 'sanitize_fields'],
+			    'default'           => self::DEFAULT_SETTINGS
+			]
+		);
+
+		add_settings_section( 
+			$settings_section,
+			'', // __( 'AI Shield', 'ai-shield' ),
+			'', // 'ai_shield_main_section_text_output',
+			$this->option_page
+		);
+
+		add_settings_field(
+			'enabled',
+			__('Enabled', 'ai-shield' ),
+			[$this, 'render_checkbox_input'],
+			$this->option_page,
+			$settings_section,
+			['label_for' => 'enabled']
+		);
+
+		add_settings_field(
+			'use_cache',
+			__('Cache enabled', 'ai-shield' ),
+			[$this, 'render_checkbox_input'],
+			$this->option_page,
+			$settings_section,
+			['label_for' => 'use_cache']
+		);
+
+		add_settings_field(
+			'cache_duration',
+			__('Cache duration', 'ai-shield' ),
+			[$this, 'render_cache_duration_input'],
+			$this->option_page,
+			$settings_section,
+			['label_for' => 'cache_duration']
+		);
+	}
+
+	public function register_options_page() {
+		add_menu_page(
+			'AI Shield Settings',
+			'AI Shield',
+			'manage_options',
+			'ai_shield',
+			[$this, 'options_page_html']
+		);
+	}
+
+	public function options_page_html() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+	
+		if ( isset( $_GET['settings-updated'] ) ) {
+			add_settings_error(
+				'options_messages',
+				'my_options_message',
+				esc_html__( 'Settings saved', 'ai-shield' ),
+				'success'
+			);
+		}
+	
+		settings_errors( 'options_messages' );
+	
+		?>
+		<div class="wrap">
+			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+			<form action="options.php" method="post">
+				<?php
+					settings_fields( $this->option_group );
+					do_settings_sections( $this->option_page );
+					submit_button( 'Save Settings' );
+				?>
+			</form>
+		</div>
+		<?php
+	}
+	
+
+	function render_checkbox_input( $args ) {
+		$value = get_option( self::OPTION_NAME )[$args['label_for']] ?? '';
+		?>
+		<input
+			type="checkbox"
+			id="<?php echo esc_attr( $args['label_for'] ); ?>"
+			name="<?php echo esc_attr( self::OPTION_NAME ) ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
+			<?php if( $value ) echo esc_attr("checked"); ?>>
+		<?php
+	}
+
+	function render_cache_duration_input( $args ) {
+		$value = get_option( self::OPTION_NAME )[$args['label_for']] ?? '';
+		?>
+		<input
+			type="number"
+			id="<?php echo esc_attr( $args['label_for'] ); ?>"
+			name="<?php echo esc_attr( self::OPTION_NAME ) ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
+			value="<?php echo esc_attr( $value ); ?>"
+			min="1"
+			required
+			list="AiShieldDefaultCacheDurations">
+		<datalist id="AiShieldDefaultCacheDurations">
+			<option value="1"></option>
+			<option value="5"></option>
+			<option value="15"></option>
+			<option value="60"></option>
+			<option value="480"></option>
+			<option value="1440"></option>
+		</datalist>
+		<p class="description"><?php esc_html_e( 'How many minutes should the transformed content be cached for? (Changing the content will always update the cache immediately.)', 'ai-shield' ); ?></p>
+		<?php
+	}
+
+	function sanitize_checkbox( $value ) {
+		if ( !empty( $value ) ) {
+			return ( 'on' === $value ) ? true : false;
+		} else {
+			return false;
+		}
+	}
+
+	function sanitize_fields( $value ) {
+		$value = (array) $value;
+
+		$value['enabled'] = $this->sanitize_checkbox( $value['enabled'] );
+		$value['use_cache'] = $this->sanitize_checkbox( $value['use_cache'] );
+		
+
+		if ( !empty ( $value['cache_duration'] )) {
+			if( !is_numeric( $value['cache_duration'] ) || $value['cache_duration'] <= 0) {
+				add_settings_error(
+					'options_messages',
+					'cache_duration',
+					esc_html__( 'Cache duration must be a number > 0', 'ai-shield' ),
+					'error'
+				);
+			} else {
+				$value['cache_duration'] = intval($value['cache_duration']);
+			}
+		}
+
+		return $value;
+	}
+
+	public function plugin_action_links( $links ) {
+		$action_links = [
+			'settings' => '<a href="' . admin_url( 'admin.php?page=ai_shield' ) . '" aria-label="' . esc_attr__( 'View AI Shield settings', 'ai-shield' ) . '">' . esc_html__( 'Settings', 'ai-shield' ) . '</a>',
+		];
+
+		return array_merge( $action_links, $links );
+	}
+
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_styles() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Ai_Shield_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Ai_Shield_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
 		wp_enqueue_style( $this->ai_shield, plugin_dir_url( __FILE__ ) . 'css/ai-shield-admin.css', array(), $this->version, 'all' );
 
@@ -79,18 +261,6 @@ class Ai_Shield_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Ai_Shield_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Ai_Shield_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
 		wp_enqueue_script( $this->ai_shield, plugin_dir_url( __FILE__ ) . 'js/ai-shield-admin.js', array( 'jquery' ), $this->version, false );
 

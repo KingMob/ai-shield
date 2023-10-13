@@ -31,6 +31,10 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+if ( ! defined( 'AI_SHIELD_PLUGIN_FILE' ) ) {
+	define( 'AI_SHIELD_PLUGIN_FILE', __FILE__ );
+}
+
 define( 'AI_SHIELD_VERSION', '1.0.1' );
 
 /**

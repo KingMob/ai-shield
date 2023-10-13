@@ -158,54 +158,112 @@ class Ai_Shield {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Ai_Shield_Admin( $this->get_ai_shield(), $this->get_version() );
+		$admin = new Ai_Shield_Admin( $this->get_ai_shield(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_init', $admin, 'register_settings' );
+		$this->loader->add_action( 'admin_menu', $admin, 'register_options_page' );
+
+		$this->loader->add_filter( 'plugin_action_links_' . plugin_basename( AI_SHIELD_PLUGIN_FILE ), $admin, 'plugin_action_links' );
+
+		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $admin, 'enqueue_scripts' );
 
 	}
 
+	private function transform_content( $content, $debug_mode = false ) {
+		// $len = mb_strlen($content);
+		// return chunk_split($content, mt_rand(2, 20), mb_chr(0x180E));
+		// $content = chunk_split($content, mt_rand(2, 20), '❄');
+		// $content = chunk_split($content, mt_rand(2, 20), '❄');
+		// $content = chunk_split($content, mt_rand(2, 20), '❄');
+
+		// $num_iters = 3;
+		// $rand_keys = array_rand($this->zero_width_chars, $num_iters);
+		// for ($i = 0; $i < $num_iters; $i++) {
+		//     $content = implode($this->zero_width_chars[$rand_keys[$i]], mb_str_split($content, mt_rand(2,20)));
+		// }
+
+		// $content = implode(mb_chr(0x180E), mb_str_split($content, mt_rand(2,20)));
+		// $content = implode(mb_chr(0x180E), mb_str_split($content, mt_rand(2,20)));
+		// $content = implode('❄', mb_str_split($content, mt_rand(2,20)));
+		// $content = implode('❄', mb_str_split($content, mt_rand(2,20)));
+
+		// $pattern = '>[^<]+<';
+		// $content = mb_ereg_replace_callback($pattern, function ($matches) {
+		//     return '>' . implode('❄', mb_str_split(mb_substr($matches[0], 1, mb_strlen($matches[0]) - 2), mt_rand(2,20))) . '<';
+		// }, $content, 'm');
+
+
+		// $pattern = '(\>|\&\w+;)([^<]*)(\<|\&\w+;)';
+		// (>|&\w+;)([^<&]+)(<|&\w+;)
+		// $pattern = '(>|;)\s*([^<&]+)\s*(<|&)';
+
+		$pattern = '((?:>|;)\s*)([^<&]+)(\s*(?:<|&))';
+		$content = mb_ereg_replace_callback($pattern, function ($matches) use ($debug_mode) {
+			if( $debug_mode ) {
+				return $matches[1] . implode('❄', mb_str_split($matches[2], mt_rand(2,20))) . $matches[3];
+			}
+
+			return $matches[1]
+				. implode($this->zero_width_chars[array_rand($this->zero_width_chars)],
+					mb_str_split($matches[2], mt_rand(2,10)))
+				. $matches[3];
+		}, $content, 'm');
+
+
+		$content = mb_ereg_replace_callback(' ', function ($matches) use ($debug_mode) {
+			if( $debug_mode ) {
+				return '❄';
+			}
+
+			return $this->space_substitute_chars[array_rand($this->space_substitute_chars)];
+		}, $content, 'm');
+
+		return $content;
+	}
+
+	/**
+	 * Alters $content to insert zero-width characters inside words, 
+	 * and replace spaces with other invisible characters.
+	 * 
+	 * @param string $content 
+	 * @return string|false|null 
+	 */
     public function obscure_content( $content ) {
-//        $len = mb_strlen($content);
-//        return chunk_split($content, mt_rand(2, 20), mb_chr(0x180E));
-//        $content = chunk_split($content, mt_rand(2, 20), '❄');
-//        $content = chunk_split($content, mt_rand(2, 20), '❄');
-//        $content = chunk_split($content, mt_rand(2, 20), '❄');
+		$options = get_option(Ai_Shield_Admin::OPTION_NAME, Ai_Shield_Admin::DEFAULT_SETTINGS);
 
-//        $num_iters = 3;
-//        $rand_keys = array_rand($this->zero_width_chars, $num_iters);
-//        for ($i = 0; $i < $num_iters; $i++) {
-//            $content = implode($this->zero_width_chars[$rand_keys[$i]], mb_str_split($content, mt_rand(2,20)));
-//        }
+		error_log(var_export($options, true));
+		// error_log("is home:".is_home());
+		// error_log("is front_page:".is_front_page());
+		// error_log("is singular:".is_singular());
+		// error_log("in loop:".in_the_loop());
+		// error_log("is main query:".is_main_query());
 
-//        $content = implode(mb_chr(0x180E), mb_str_split($content, mt_rand(2,20)));
-//        $content = implode(mb_chr(0x180E), mb_str_split($content, mt_rand(2,20)));
-//        $content = implode('❄', mb_str_split($content, mt_rand(2,20)));
-//        $content = implode('❄', mb_str_split($content, mt_rand(2,20)));
+		$debug_mode = rest_sanitize_boolean($_GET['ai_shield_debug']);
 
-//        $pattern = '>[^<]+<';
-//        $content = mb_ereg_replace_callback($pattern, function ($matches) {
-//            return '>' . implode('❄', mb_str_split(mb_substr($matches[0], 1, mb_strlen($matches[0]) - 2), mt_rand(2,20))) . '<';
-//        }, $content, 'm');
+		if ( $options['enabled'] ) {
+			if (( is_front_page() || is_singular() ) && in_the_loop() && is_main_query() ) {
 
+				if ( $options['use_cache'] ) {
+				
+					$cache_key = 'ai_shield_' . sha1($content);
+					$cached_content = get_transient($cache_key);
 
-//        $pattern = '(\>|\&\w+;)([^<]*)(\<|\&\w+;)';
-//        (>|&\w+;)([^<&]+)(<|&\w+;)
-//        $pattern = '(>|;)\s*([^<&]+)\s*(<|&)';
-        $pattern = '((?:>|;)\s*)([^<&]+)(\s*(?:<|&))';
-        $content = mb_ereg_replace_callback($pattern, function ($matches) {
-            return $matches[1]
-                . implode($this->zero_width_chars[array_rand($this->zero_width_chars)],
-                    mb_str_split($matches[2], mt_rand(2,10)))
-                . $matches[3];
-//            return $matches[1] . implode('❄', mb_str_split($matches[2], mt_rand(2,20))) . $matches[3];
-        }, $content, 'm');
+					if ( $cached_content !== false ) {
+						error_log("Returning cached content for: " . $cache_key);
+						return $cached_content;
+					} else {
+						$content = $this->transform_content( $content, $debug_mode );
 
-
-        $content = mb_ereg_replace_callback(' ', function ($matches) {
-//            return '❄';
-            return $this->space_substitute_chars[array_rand($this->space_substitute_chars)];
-        }, $content, 'm');
+						$cache_duration = intval($options['cache_duration']) * MINUTE_IN_SECONDS;
+						error_log("Caching for " . $options['cache_duration'] . " minutes");
+						set_transient($cache_key, $content, $cache_duration);
+					}
+				} else {
+					$content = $this->transform_content( $content, $debug_mode );
+				}
+			}
+		}
 
         return $content;
     }
@@ -219,11 +277,14 @@ class Ai_Shield {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Ai_Shield_Public( $this->get_ai_shield(), $this->get_version() );
+		// Not currently used
+		// $plugin_public = new Ai_Shield_Public( $this->get_ai_shield(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+        $this->loader->add_filter('the_title', $this, 'obscure_content');
+        $this->loader->add_filter('the_preview', $this, 'obscure_content');
         $this->loader->add_filter('the_content', $this, 'obscure_content');
 	}
 

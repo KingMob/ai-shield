@@ -29,7 +29,7 @@ class Ai_Shield_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		add_option(Ai_Shield_Admin::OPTION_NAME, Ai_Shield_Admin::DEFAULT_SETTINGS);
 	}
 
 }
