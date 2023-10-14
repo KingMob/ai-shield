@@ -131,8 +131,16 @@ class Ai_Shield_Admin {
 	}
 
 	public function register_options_page() {
-		add_menu_page(
-			'AI Shield Settings',
+		// add_menu_page(
+		// 	'AI Shield Settings',
+		// 	'AI Shield',
+		// 	'manage_options',
+		// 	'ai_shield',
+		// 	[$this, 'options_page_html']
+		// );
+
+		add_options_page(
+			'AI Shield',
 			'AI Shield',
 			'manage_options',
 			'ai_shield',
@@ -145,14 +153,15 @@ class Ai_Shield_Admin {
 			return;
 		}
 	
-		if ( isset( $_GET['settings-updated'] ) ) {
-			add_settings_error(
-				'options_messages',
-				'my_options_message',
-				esc_html__( 'Settings saved', 'ai-shield' ),
-				'success'
-			);
-		}
+		// WP displays its own notice if using a submenu
+		// if ( isset( $_GET['settings-updated'] ) ) {
+		// 	add_settings_error(
+		// 		'options_messages',
+		// 		'my_options_message',
+		// 		esc_html__( 'Settings saved', 'ai-shield' ),
+		// 		'success'
+		// 	);
+		// }
 	
 		settings_errors( 'options_messages' );
 	
@@ -253,7 +262,7 @@ class Ai_Shield_Admin {
 
 	public function plugin_action_links( $links ) {
 		$action_links = [
-			'settings' => '<a href="' . admin_url( 'admin.php?page=ai_shield' ) . '" aria-label="' . esc_attr__( 'View AI Shield settings', 'ai-shield' ) . '">' . esc_html__( 'Settings', 'ai-shield' ) . '</a>',
+			'settings' => '<a href="' . admin_url( 'options-general.php?page=ai_shield' ) . '" aria-label="' . esc_attr__( 'View AI Shield settings', 'ai-shield' ) . '">' . esc_html__( 'Settings', 'ai-shield' ) . '</a>',
 		];
 
 		return array_merge( $action_links, $links );
