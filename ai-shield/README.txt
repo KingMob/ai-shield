@@ -46,7 +46,7 @@ click on the "View!" button. It will show you all the invisible characters. Anyt
 
 = What content does it protect? =
 
-For now, just the body content, not things like titles or images. If you want those to be "obscured" too, let me know.
+For now, the body content, previews, and titles, but not things like images. If you want those to be obscured too, let me know.
 
 == Screenshots ==
 
@@ -55,7 +55,10 @@ For now, just the body content, not things like titles or images. If you want th
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
+* Add settings page
+
+= 1.0.0 =
 * Initial release
 
 == Upgrade Notice ==
