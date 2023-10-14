@@ -232,7 +232,7 @@ class Ai_Shield {
     public function obscure_content( $content ) {
 		$options = get_option(Ai_Shield_Admin::OPTION_NAME, Ai_Shield_Admin::DEFAULT_SETTINGS);
 
-		error_log(var_export($options, true));
+		// error_log(var_export($options, true));
 		// error_log("is home:".is_home());
 		// error_log("is front_page:".is_front_page());
 		// error_log("is singular:".is_singular());

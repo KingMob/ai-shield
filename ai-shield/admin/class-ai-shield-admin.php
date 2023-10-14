@@ -158,7 +158,7 @@ class Ai_Shield_Admin {
 	
 		?>
 		<div class="wrap">
-			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+			<h1><?php esc_html_e( get_admin_page_title() ); ?></h1>
 			<form action="options.php" method="post">
 				<?php
 					settings_fields( $this->option_group );
@@ -205,9 +205,12 @@ class Ai_Shield_Admin {
 		<?php
 	}
 
-	function sanitize_checkbox( $value ) {
-		if ( !empty( $value ) ) {
-			return ( 'on' === $value ) ? true : false;
+	function sanitize_checkbox( $settings, $key ) {
+		if ( array_key_exists( $key, $settings ) ) {
+			// Checking multiple values because, if the old value was the default, WP 
+			// calls add_option(), which effectively double-sanitizes the value. So
+			// sanitization should always be ready to handle its output values
+			return in_array( $settings[$key], ['on', '1', 'true', 'yes', true, 1] );
 		} else {
 			return false;
 		}
@@ -216,11 +219,21 @@ class Ai_Shield_Admin {
 	function sanitize_fields( $value ) {
 		$value = (array) $value;
 
-		$value['enabled'] = $this->sanitize_checkbox( $value['enabled'] );
-		$value['use_cache'] = $this->sanitize_checkbox( $value['use_cache'] );
+		// error_log('Sanitizing from top-level: ' . $_SERVER['PHP_SELF']);
+
+		// ob_start();
+        // debug_print_backtrace();
+        // $trace = ob_get_contents();
+        // ob_end_clean();
+		// error_log("Backtrace: " . $trace);
+
+		// error_log('Input: ' . var_export($value, true));
+
+		$value['enabled'] = $this->sanitize_checkbox( $value, 'enabled' );
+		$value['use_cache'] = $this->sanitize_checkbox( $value, 'use_cache' );
 		
 
-		if ( !empty ( $value['cache_duration'] )) {
+		if ( array_key_exists( 'cache_duration', $value )) {
 			if( !is_numeric( $value['cache_duration'] ) || $value['cache_duration'] <= 0) {
 				add_settings_error(
 					'options_messages',
@@ -232,6 +245,8 @@ class Ai_Shield_Admin {
 				$value['cache_duration'] = intval($value['cache_duration']);
 			}
 		}
+
+		// error_log('Output: ' . var_export($value, true));
 
 		return $value;
 	}
