@@ -263,7 +263,7 @@ class Ai_Shield_Admin {
 	public function plugin_action_links( $links ) {
 		$action_links = [
 			'settings' => '<a href="' . admin_url( 'options-general.php?page=ai_shield' ) . '" aria-label="' . esc_attr__( 'View AI Shield settings', 'ai-shield' ) . '">' . esc_html__( 'Settings', 'ai-shield' ) . '</a>',
-			'invisible' => '<a href="https://invisible-characters.com/view.html" aria-label="' . esc_attr__( 'View invisible characters', 'ai-shield' ) . '">' . esc_html__( 'View invisible characters', 'ai-shield' ) . '</a>',
+			'invisible' => '<a href="https://invisible-characters.com/view.html" aria-label="' . esc_attr__( 'Open invisible character viewer', 'ai-shield' ) . '">' . esc_html__( 'Open invisible character viewer', 'ai-shield' ) . '</a>',
 		];
 
 		return array_merge( $action_links, $links );
