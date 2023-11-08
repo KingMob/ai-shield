@@ -64,9 +64,9 @@ class Ai_Shield_Admin {
 	private $option_page = 'ai_shield_page';
 
 	public const DEFAULT_SETTINGS = [
-		'enabled' => true,
-		'use_cache' => true,
-		'cache_duration' => 5
+		'ai_shield_enabled' => true,
+		'ai_shield_use_cache' => true,
+		'ai_shield_cache_duration' => 5
 	];
 
 	/**
@@ -103,30 +103,30 @@ class Ai_Shield_Admin {
 		);
 
 		add_settings_field(
-			'enabled',
+			'ai_shield_enabled',
 			__('Enabled', 'ai-shield' ),
 			[$this, 'render_checkbox_input'],
 			$this->option_page,
 			$settings_section,
-			['label_for' => 'enabled']
+			['label_for' => 'ai_shield_enabled']
 		);
 
 		add_settings_field(
-			'use_cache',
+			'ai_shield_use_cache',
 			__('Cache enabled', 'ai-shield' ),
 			[$this, 'render_checkbox_input'],
 			$this->option_page,
 			$settings_section,
-			['label_for' => 'use_cache']
+			['label_for' => 'ai_shield_use_cache']
 		);
 
 		add_settings_field(
-			'cache_duration',
+			'ai_shield_cache_duration',
 			__('Cache duration', 'ai-shield' ),
 			[$this, 'render_cache_duration_input'],
 			$this->option_page,
 			$settings_section,
-			['label_for' => 'cache_duration']
+			['label_for' => 'ai_shield_cache_duration']
 		);
 	}
 
@@ -238,20 +238,20 @@ class Ai_Shield_Admin {
 
 		// error_log('Input: ' . var_export($value, true));
 
-		$value['enabled'] = $this->sanitize_checkbox( $value, 'enabled' );
-		$value['use_cache'] = $this->sanitize_checkbox( $value, 'use_cache' );
+		$value['ai_shield_enabled'] = $this->sanitize_checkbox( $value, 'ai_shield_enabled' );
+		$value['ai_shield_use_cache'] = $this->sanitize_checkbox( $value, 'ai_shield_use_cache' );
 		
 
-		if ( array_key_exists( 'cache_duration', $value )) {
-			if( !is_numeric( $value['cache_duration'] ) || $value['cache_duration'] <= 0) {
+		if ( array_key_exists( 'ai_shield_cache_duration', $value )) {
+			if( !is_numeric( $value['ai_shield_cache_duration'] ) || $value['ai_shield_cache_duration'] <= 0) {
 				add_settings_error(
 					'options_messages',
-					'cache_duration',
+					'ai_shield_cache_duration',
 					esc_html__( 'Cache duration must be a number > 0', 'ai-shield' ),
 					'error'
 				);
 			} else {
-				$value['cache_duration'] = intval($value['cache_duration']);
+				$value['ai_shield_cache_duration'] = intval($value['ai_shield_cache_duration']);
 			}
 		}
 

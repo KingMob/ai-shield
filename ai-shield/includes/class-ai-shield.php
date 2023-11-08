@@ -241,10 +241,10 @@ class Ai_Shield {
 
 		$debug_mode = array_key_exists('ai_shield_debug', $_GET) ? rest_sanitize_boolean($_GET['ai_shield_debug']) : false;
 
-		if ( $options['enabled'] ) {
+		if ( $options['ai_shield_enabled'] ) {
 			if (( is_front_page() || is_singular() ) && in_the_loop() && is_main_query() ) {
 
-				if ( $options['use_cache'] ) {
+				if ( $options['ai_shield_use_cache'] ) {
 				
 					$cache_key = 'ai_shield_' . sha1($content);
 					$cached_content = get_transient($cache_key);
@@ -255,8 +255,8 @@ class Ai_Shield {
 					} else {
 						$content = $this->transform_content( $content, $debug_mode );
 
-						$cache_duration = intval($options['cache_duration']) * MINUTE_IN_SECONDS;
-						error_log("Caching for " . $options['cache_duration'] . " minutes");
+						$cache_duration = intval($options['ai_shield_cache_duration']) * MINUTE_IN_SECONDS;
+						error_log("Caching for " . $options['ai_shield_cache_duration'] . " minutes");
 						set_transient($cache_key, $content, $cache_duration);
 					}
 				} else {
