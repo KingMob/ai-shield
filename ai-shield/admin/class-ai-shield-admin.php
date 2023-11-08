@@ -167,7 +167,7 @@ class Ai_Shield_Admin {
 	
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( get_admin_page_title() ); ?></h1>
+			<h1><?php esc_html_e( get_admin_page_title(), 'ai-shield' ); ?></h1>
 			<form action="options.php" method="post">
 				<?php
 					settings_fields( $this->option_group );
@@ -185,9 +185,9 @@ class Ai_Shield_Admin {
 		?>
 		<input
 			type="checkbox"
-			id="<?php esc_attr_e( $args['label_for'] ); ?>"
-			name="<?php esc_attr_e( self::OPTION_NAME ) ?>[<?php esc_attr_e( $args['label_for'] ); ?>]"
-			<?php if( $value ) esc_attr_e("checked"); ?>>
+			id="<?php echo esc_attr( $args['label_for'] ); ?>"
+			name="<?php echo esc_attr( self::OPTION_NAME ) ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
+			<?php if( $value ) echo esc_attr("checked"); ?>>
 		<?php
 	}
 
@@ -196,9 +196,9 @@ class Ai_Shield_Admin {
 		?>
 		<input
 			type="number"
-			id="<?php esc_attr_e( $args['label_for'] ); ?>"
-			name="<?php esc_attr_e( self::OPTION_NAME ) ?>[<?php esc_attr_e( $args['label_for'] ); ?>]"
-			value="<?php esc_attr_e( $value ); ?>"
+			id="<?php echo esc_attr( $args['label_for'] ); ?>"
+			name="<?php echo esc_attr( self::OPTION_NAME ) ?>[<?php echo esc_attr( $args['label_for'] ); ?>]"
+			value="<?php echo esc_attr( $value ); ?>"
 			min="1"
 			required
 			list="AiShieldDefaultCacheDurations">
