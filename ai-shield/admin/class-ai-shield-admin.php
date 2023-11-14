@@ -167,7 +167,7 @@ class Ai_Shield_Admin {
 	
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( get_admin_page_title(), 'ai-shield' ); ?></h1>
+			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<form action="options.php" method="post">
 				<?php
 					settings_fields( $this->option_group );
