@@ -1,18 +1,19 @@
 === AI Shield ===
 Contributors: kinggmobb
 Donate link: https://github.com/sponsors/KingMob
+Stable tag: 1.0.2
 Tags: AI, chatGPT, gpt, openai
 Requires at least: 5.6.10
 Tested up to: 6.4
-Stable tag: 1.0.1
 Requires PHP: 7.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-AI Shield helps protect your content from being used to train AI models, by inserting whitespace
-that's invisible to humans, but awkward for AIs.
+AI Shield helps protect your content from being used to train AI models, by inserting whitespace that's invisible to humans, but awkward for AIs.
 
 == Description ==
+
+AI Shield helps protect your content from being used to train AI models, by inserting whitespace that's invisible to humans, but awkward for AIs.
 
 This is not fool-proof, but will add a roadblock to ML use of the data.
 

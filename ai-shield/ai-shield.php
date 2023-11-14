@@ -1,23 +1,10 @@
 <?php
-
-/**
- * The plugin bootstrap file
- *
- * This file is read by WordPress to generate the plugin information in the plugin
- * admin area. This file also includes all of the dependencies used by the plugin,
- * registers the activation and deactivation functions, and defines a function
- * that starts the plugin.
- *
- * @link              https://github.com/KingMob/ai-shield
- * @since             1.0.0
- * @package           Ai_Shield
- *
- * @wordpress-plugin
+/*
  * Plugin Name:       AI Shield
  * Plugin URI:        https://github.com/KingMob/ai-shield
  * Description:       AI Shield helps protect your content from being used to train AI models, by inserting whitespace
 that's invisible to humans, but awkward for AIs.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            Matthew Davidson
  * Author URI:        https://github.com/KingMob
  * License:           GPL-2.0
