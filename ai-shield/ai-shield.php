@@ -2,8 +2,7 @@
 /*
  * Plugin Name:       AI Shield
  * Plugin URI:        https://github.com/KingMob/ai-shield
- * Description:       AI Shield helps protect your content from being used to train AI models, by inserting whitespace
-that's invisible to humans, but awkward for AIs.
+ * Description:       AI Shield helps protect your content from being used to train AI models, by inserting whitespace that's invisible to humans, but awkward for AIs.
  * Version:           1.0.2
  * Author:            Matthew Davidson
  * Author URI:        https://github.com/KingMob
