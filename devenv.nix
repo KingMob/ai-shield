@@ -7,6 +7,7 @@
   # https://devenv.sh/packages/
   packages = [ 
     pkgs.git
+    pkgs.subversion
     pkgs.wordpress
     pkgs.wp-cli 
     pkgs.zip
