@@ -1,7 +1,7 @@
 === AI Shield ===
 Contributors: kinggmobb
 Donate link: https://github.com/sponsors/KingMob
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 Tags: AI, chatGPT, gpt, openai
 Requires at least: 5.6.10
 Tested up to: 6.4
@@ -52,6 +52,9 @@ For now, the body content, previews, and titles, but not things like images. If 
 2. The same paragraph pastes into https://invisible-characters.com/view.html. You can see all the whitespace characters at the bottom.
 
 == Changelog ==
+
+= 1.0.3 =
+* Fixed priority bug that interfered with some shortcodes
 
 = 1.0.2 =
 * Fixed minor admin bug
