@@ -282,9 +282,9 @@ class Ai_Shield {
 		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
-        $this->loader->add_filter('the_title', $this, 'obscure_content');
-        $this->loader->add_filter('the_preview', $this, 'obscure_content');
-        $this->loader->add_filter('the_content', $this, 'obscure_content');
+        $this->loader->add_filter( 'the_title', $this, 'obscure_content', PHP_INT_MAX );
+        $this->loader->add_filter( 'the_preview', $this, 'obscure_content', PHP_INT_MAX );
+        $this->loader->add_filter( 'the_content', $this, 'obscure_content', PHP_INT_MAX );
 	}
 
 	/**
